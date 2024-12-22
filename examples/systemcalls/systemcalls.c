@@ -1,3 +1,10 @@
+#include <string.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
 #include "systemcalls.h"
 
 /**
@@ -16,6 +23,12 @@ bool do_system(const char *cmd)
  *   and return a boolean true if the system() call completed with success
  *   or false() if it returned a failure
 */
+    int ret_val = 0;
+
+    ret_val = system(cmd);
+
+    if(ret_val != 0)
+        return false;
 
     return true;
 }
@@ -59,6 +72,38 @@ bool do_exec(int count, ...)
  *
 */
 
+    int status;
+    pid_t pid;
+    char *exe_args[count+1];
+
+    for(i = 0; i < count; i++)
+        exe_args[i] = command[i+1];
+
+    exe_args[count-1] = command[count-1];
+    exe_args[count] = command[count];
+
+    if(strstr(command[0], "/") == NULL)
+        return false;
+    else if(strstr(command[count-2], "-f") != NULL)
+    {
+        if(strstr(command[count-1], "/") == NULL)
+            return false;
+    }
+
+    fflush(stdout);
+
+    pid = fork();
+    if(pid == -1)
+        return false;
+    else if(pid == 0)
+    {
+        if(execv(command[0], exe_args) == -1)
+            exit(EXIT_FAILURE);
+    }
+
+    if(waitpid(pid, &status, 0) == -1)
+        return false;
+
     va_end(args);
 
     return true;
@@ -92,6 +137,35 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
  *   The rest of the behaviour is same as do_exec()
  *
 */
+
+    int status;
+    pid_t pid;
+
+    if(strstr(command[0], "/") == NULL)
+        return false;
+
+    int fd_out = open(outputfile, O_WRONLY|O_TRUNC|O_CREAT, 0644);
+    if(fd_out < 0)
+        return false;
+
+    pid = fork();
+    if(pid == -1)
+        return false;
+    else if(pid == 0)
+    {
+        if(dup2(fd_out, STDOUT_FILENO) < 0)
+            exit(EXIT_FAILURE);
+
+        close(fd_out);
+
+        if(execv(command[0], command) == -1)
+            exit(EXIT_FAILURE);
+    }
+    else
+        close(fd_out);
+
+    if(waitpid(pid, &status, 0) == -1)
+        return false;
 
     va_end(args);
 
