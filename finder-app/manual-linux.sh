@@ -99,8 +99,7 @@ mknod -m 600 dev/console c 5 1
 
 # TODO: Clean and build the writer utility
 # usare lo script Makefile con l'opzione del cross-compiler come in assignment 2
-FINDER_APP=~/assignment-2-mr-std/finder-app
-cd ${FINDER_APP}
+cd ${FINDER_APP_DIR}
 make clean
 make CROSS_COMPILE=${CROSS_COMPILE}
 
@@ -110,12 +109,12 @@ make CROSS_COMPILE=${CROSS_COMPILE}
 cd ${OUTDIR}/rootfs
 mkdir home/conf
 
-cp -a ${FINDER_APP}/conf/assignment.txt home/conf
-cp -a ${FINDER_APP}/conf/username.txt home/conf
-cp -a ${FINDER_APP}/finder-test.sh home
-cp -a ${FINDER_APP}/finder.sh home
-cp -a ${FINDER_APP}/writer home
-cp -a ${FINDER_APP}/autorun-qemu.sh home
+cp -a ${FINDER_APP_DIR}/conf/assignment.txt home/conf
+cp -a ${FINDER_APP_DIR}/conf/username.txt home/conf
+cp -a ${FINDER_APP_DIR}/finder-test.sh home
+cp -a ${FINDER_APP_DIR}/finder.sh home
+cp -a ${FINDER_APP_DIR}/writer home
+cp -a ${FINDER_APP_DIR}/autorun-qemu.sh home
 
 # TODO: Chown the root directory
 chown -R root:root *
