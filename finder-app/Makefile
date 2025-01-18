@@ -1,13 +1,10 @@
-CROSS_COMPILE =
+all: writer
 
-writer: writer.c
-ifeq ($(strip $(CROSS_COMPILE)),)
-	echo "empty"
-	cc writer.c -o writer
-else
-	echo "ARM compiler"
-	$(CROSS_COMPILE)gcc writer.c -o writer
-endif
+main.o: writer.c
+	$(CC) $(CCFLAGS) -c writer.c
 
-clean: 
-	rm -f writer
+writer: writer.o
+	$(CC) $(LDFLAGS) writer.o -o writer
+
+clean:
+	rm -f writer.o writer
