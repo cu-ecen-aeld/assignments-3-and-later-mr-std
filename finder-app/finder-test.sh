@@ -67,7 +67,7 @@ rm -rf /tmp/aeld-data
 set +e
 echo ${OUTPUTSTRING} | grep "${MATCHSTR}"
 
-WRITE_PATH = /tmp/assignment4-result.txt
+WRITE_PATH=/tmp/assignment4-result.txt
 
 touch -f "$WRITE_PATH"
 
