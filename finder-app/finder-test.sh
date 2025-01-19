@@ -69,7 +69,7 @@ echo ${OUTPUTSTRING} | grep "${MATCHSTR}"
 
 touch -f /tmp/assignment4-result.txt
 
-WRITE_PATH=/tmp/assignment4-result.txt
+WRITE_PATH="/tmp/assignment4-result.txt"
 
 if [ $? -eq 0 ]; then
 	echo "success" > "$WRITE_PATH"
