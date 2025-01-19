@@ -69,12 +69,10 @@ echo ${OUTPUTSTRING} | grep "${MATCHSTR}"
 
 touch -f /tmp/assignment4-result.txt
 
-WRITE_PATH="/tmp/assignment4-result.txt"
-
 if [ $? -eq 0 ]; then
-	echo "success" > "$WRITE_PATH"
+	echo "success" > /tmp/assignment4-result.txt
 	exit 0
 else
-	echo "failed: expected  ${MATCHSTR} in ${OUTPUTSTRING} but instead found" > "$WRITE_PATH"
+	echo "failed: expected  ${MATCHSTR} in ${OUTPUTSTRING} but instead found" > /tmp/assignment4-result.txt
 	exit 1
 fi
