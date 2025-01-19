@@ -67,9 +67,9 @@ rm -rf /tmp/aeld-data
 set +e
 echo ${OUTPUTSTRING} | grep "${MATCHSTR}"
 
-WRITE_PATH=/tmp/assignment4-result.txt
+touch -f /tmp/assignment4-result.txt
 
-touch -f "$WRITE_PATH"
+WRITE_PATH=/tmp/assignment4-result.txt
 
 if [ $? -eq 0 ]; then
 	echo "success" > "$WRITE_PATH"
