@@ -1,13 +1,10 @@
-CROSS_COMPILE=
+all: aesdsocket
 
-all: aesdsocket aesdsocket.o
-default: aesdsocket aesdsocket.o
+main.o: aesdsocket.c
+	$(CC) $(CCFLAGS) -c aesdsocket.c
 
 aesdsocket: aesdsocket.o
-	$(CROSS_COMPILE)gcc -g -Wall -Werror -I/ aesdsocket.c -o aesdsocket
-
-aesdsocket.o: aesdsocket.c
-	$(CROSS_COMPILE)gcc -g -Wall -Werror -c -o aesdsocket.o aesdsocket.c
+	$(CC) $(LDFLAGS) aesdsocket.o -o aesdsocket
 
 clean:
 	rm -f aesdsocket.o aesdsocket
